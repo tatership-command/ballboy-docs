@@ -1,6 +1,6 @@
 ---
 title: "Adding Ball Boy"
-summary: "Invite Ball Boy and run the guided setup flow."
+summary: "Join the Ball Boy Discord to get the invite link, then run the guided setup flow."
 weight: 11
 ---
 
@@ -14,11 +14,20 @@ records results, keeps a live roster board of who owns which team, mirrors
 ownership with Discord roles, supports streaming announcements, and can run a
 team draft — all through slash commands and a Discord Activity.
 
-## Inviting the bot
+## Getting the invite link
 
-A server admin adds Ball Boy to a server using its Discord OAuth invite link.
+Ball Boy is **not** publicly listed and has no public self-serve invite link. To
+add it to your own server, you first need to be a member of the **Ball Boy
+Discord server**:
 
-<!-- TODO(owner): canonical invite URL + required OAuth scopes -->
+<https://discord.gg/REVjfCRpw>
+
+Access to Ball Boy requires membership in that server. Once you've joined, obtain
+the **Server Owner** role there — the link to add Ball Boy to your own league
+server is shared in a channel that's only visible to members with that role. A
+commissioner who wants Ball Boy in their server: joins the Ball Boy Discord,
+obtains the Server Owner role, and uses the invite link shared in that gated
+channel to add the bot.
 
 ## The guild-join setup flow
 
