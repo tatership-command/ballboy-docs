@@ -2,7 +2,7 @@
 title: "Getting Started"
 summary: "Add Ball Boy, grant permissions, and create your first league and season."
 weight: 10
-bookFlatSection: true
+bookCollapseSection: true
 ---
 
 # Getting Started

@@ -2,7 +2,7 @@
 title: "FAQ & Troubleshooting"
 summary: "Answers to common permission, setup, and troubleshooting questions."
 weight: 50
-bookFlatSection: true
+bookCollapseSection: true
 ---
 
 # FAQ & Troubleshooting

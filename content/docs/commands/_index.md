@@ -2,7 +2,7 @@
 title: "Command Reference"
 summary: "Reference for every Ball Boy slash command, grouped by command."
 weight: 30
-bookFlatSection: true
+bookCollapseSection: true
 ---
 
 # Command Reference

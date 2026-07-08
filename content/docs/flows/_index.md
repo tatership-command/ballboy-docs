@@ -2,7 +2,7 @@
 title: "Flows"
 summary: "End-to-end walkthroughs that cross multiple commands."
 weight: 40
-bookFlatSection: true
+bookCollapseSection: true
 ---
 
 # Flows

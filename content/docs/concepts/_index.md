@@ -2,7 +2,7 @@
 title: "Concepts"
 summary: "How Ball Boy models leagues, seasons, ownership, roles, and streaming."
 weight: 20
-bookFlatSection: true
+bookCollapseSection: true
 ---
 
 # Concepts

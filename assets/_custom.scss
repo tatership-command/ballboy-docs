@@ -1,10 +1,30 @@
-// Ball Boy branding — sidebar banner image.
-.book-brand-img {
+// Ball Boy branding — full-bleed sidebar banner image.
+//
+// The theme's .book-menu-content wraps everything in `padding: $padding-16`
+// (1rem, see hugo-book's assets/_main.scss) and constrains `.book-brand img`
+// to a tiny 1.5em x 1.5em logo. To make the banner span the full width of
+// the sidebar and sit flush at the top, we counteract that 1rem padding
+// with an equal negative margin on .book-brand (top/left/right — bottom
+// margin is kept positive for breathing room above the search box), and
+// override the theme's img sizing with a class+tag selector
+// (.book-brand img.book-brand-img) so it wins on specificity regardless of
+// stylesheet import order.
+.book-brand {
+  margin: -1rem -1rem 1rem -1rem;
+  padding: 0;
+}
+
+.book-brand > a {
+  display: block;
+}
+
+.book-brand img.book-brand-img {
+  display: block;
+  width: 100%;
   max-width: 100%;
   height: auto;
-  display: block;
   image-rendering: pixelated;
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 // Keep the site title in the DOM for accessibility / non-visual UAs,
