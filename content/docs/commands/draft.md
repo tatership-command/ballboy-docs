@@ -12,9 +12,9 @@ team-claim primitive under the hood — drafting a team **is** claiming it. Unli
 names rather than a nested group — `queue_view`, `queue_add`, `queue_remove`,
 `queue_clear`, and `board` are top-level `/draft` subcommands, not a nested
 `/draft queue` group. Every subcommand's `season` option defaults to the league's
-active season unless noted.
-
-<!-- VERIFY: draft subcommand permissions below are sourced from CLAUDE.md's draft "Auth model" prose rather than a line-by-line `RequiredAccess::` grep per subcommand (draft dispatches through the bridge registry). Treat any permission not independently re-grepped as carried from that source, not fresh code inspection. -->
+active season unless noted. Every subcommand's permission below was independently
+re-grepped against its `commands.rs` handler (not carried from CLAUDE.md prose) —
+see the `/draft pick` note for the one case where that check surfaced a correction.
 
 ## `/draft setup`
 
@@ -114,7 +114,9 @@ the pick clock.
 | `team` | yes | The team to draft — autocompletes to **undrafted, playable** teams only. |
 | `season` | no | Defaults to the league's active season. |
 
-**Who can run it:** The current on-clock participant, or the Commissioner.
+**Who can run it:** Only the current on-clock participant — there is **no**
+Commissioner or bot-owner bypass. A commissioner who needs to force a stuck draft
+forward uses `/draft skip` or `/draft end` instead.
 
 **What it does:** Drafts a team — a pick is the same underlying claim operation as
 `/team claim`. Advances the on-clock pointer to the next participant.

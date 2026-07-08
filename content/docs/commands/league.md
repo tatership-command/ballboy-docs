@@ -91,9 +91,10 @@ server.
 
 **Who can run it:** Commissioner.
 
-**What it does:** Updates miscellaneous league settings.
-
-<!-- VERIFY: exact accepted shapes/values for `deadlines` and `announcement_style` were not re-grepped for this page; treat as free-text/config fields until confirmed against `gateway.rs`/`commands.rs`. -->
+**What it does:** Updates miscellaneous league settings. `deadlines` and
+`announcement_style` are stored verbatim as free-text strings (no fixed shape or
+enum) — pass whatever descriptive value fits your league's convention. Passing an
+empty string for either clears it back to "not set".
 
 ## `/league delete`
 

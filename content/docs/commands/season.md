@@ -135,7 +135,8 @@ written, any skipped rows with reasons). Blocked on a completed season.
 | `league` | yes | The league (autocompleted). |
 | `season` | no | Defaults to the league's active season. |
 
-**Who can run it:** <!-- VERIFY: appendix lists Server admin + Commissioner (both gates expected to apply); confirm at `commands.rs` ~6360–6470 if precision is required. --> Server admin and Commissioner.
+**Who can run it:** Server admin and Commissioner (both gates apply — a Discord
+Administrator who is not also the league's Commissioner is still denied).
 
 **What it does:** Rolls the season back one week/phase. Blocked on a completed
 season — the only ways out of a completed season are advancing (which triggers
@@ -166,7 +167,7 @@ preserved.
 | `league` | yes | The league (autocompleted). |
 | `season` | **yes — no default** | The season to delete; unlike other season subcommands, this does **not** default to the active season. |
 
-**Who can run it:** <!-- VERIFY: appendix lists Server admin + Commissioner. --> Server admin and Commissioner.
+**Who can run it:** Server admin and Commissioner (both gates apply).
 
 **What it does:** Shows a danger-confirm button; on confirmation, cascade-deletes
 the entire season — teams, weeks, games, players, stats. This is destructive and
