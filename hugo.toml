@@ -1,0 +1,14 @@
+baseURL      = "https://docs.ball-boy.app/"
+languageCode = "en-us"
+title        = "Ball Boy Docs"
+
+[module]
+  [[module.imports]]
+    path = "github.com/alex-shpak/hugo-book"
+
+[params]
+  BookSearch = true
+  BookToC    = true
+
+[markup.goldmark.renderer]
+  unsafe = true   # allow raw HTML in markdown (Discord code blocks / callouts)
