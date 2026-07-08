@@ -1,0 +1,22 @@
+// Ball Boy branding — sidebar banner image.
+.book-brand-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  border-radius: 6px;
+}
+
+// Keep the site title in the DOM for accessibility / non-visual UAs,
+// but hide it visually now that the banner image carries the wordmark.
+.book-brand-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
