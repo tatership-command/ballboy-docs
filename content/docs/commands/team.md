@@ -1,0 +1,123 @@
+---
+title: "/team — team ownership"
+summary: "Claim, switch, leave, connect, and (for commissioners) assign or release teams."
+weight: 30
+---
+
+`/team` is a subcommand group (`/team <sub>`). It covers team ownership: claiming a
+team, switching or leaving one, connecting linked accounts to a team you already
+own, and (for commissioners) force-assigning or force-releasing a team. Every
+subcommand defaults its optional `season` option to the league's active season
+unless noted otherwise.
+
+## `/team claim`
+
+**Syntax:** `/team claim <league> <team> [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `team` | yes | The team to claim — autocompletes to **currently claimable** teams only. |
+| `season` | no | Defaults to the league's active season. |
+
+**Who can run it:** Any server member.
+
+**What it does:** Claims an available team — this is Ball Boy's single ownership
+primitive. The 5 generic FCS placeholder teams are non-playable and are always
+rejected. A successful claim also fires the Activity launch handoff, offering a
+link to finish connecting game/stream accounts in the Discord Activity.
+
+**Notes:** Claiming a new team while already owning one releases the prior team(s)
+back to CPU as part of the same operation (claim-first ordering, so you're never
+left ownerless mid-operation). See {{< relref "/docs/concepts" >}} for the
+ownership model, and {{< relref "/docs/flows" >}} for the Activity claim
+walkthrough.
+
+## `/team connect`
+
+**Syntax:** `/team connect <league> [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `season` | no | Defaults to the league's active season. |
+
+**Who can run it:** Member.
+
+**What it does:** Launches the Claim Activity to link game and stream accounts for
+a team you already own. Requires you to already own a team in the season.
+
+## `/team leave`
+
+**Syntax:** `/team leave <league> <team> [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `team` | yes | The team to leave — autocompletes across the **full roster**. |
+| `season` | no | Defaults to the league's active season. |
+
+**Who can run it:** Any server member.
+
+**What it does:** Releases your team back to CPU control.
+
+## `/team switch`
+
+**Syntax:** `/team switch <league> <team> [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `team` | yes | The new team to claim (autocompleted). |
+| `season` | no | Defaults to the league's active season. |
+
+**Who can run it:** Any server member.
+
+**What it does:** Claims a new team and releases your prior team(s), using the same
+claim-first ordering as `/team claim`.
+
+## `/team info`
+
+**Syntax:** `/team info <league> <team> [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `team` | yes | The team to inspect (autocompleted). |
+| `season` | no | Defaults to the league's active season. |
+
+**Who can run it:** Viewer.
+
+**What it does:** Shows a team's owner, record, and next game.
+
+## `/team assign`
+
+**Syntax:** `/team assign <league> <season> <team> <member>`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `season` | **yes — required** | Does not default to the active season for this subcommand. |
+| `team` | yes | The team to assign (autocompleted). |
+| `member` | yes | The Discord member to assign it to (user picker). |
+
+**Who can run it:** Commissioner.
+
+**What it does:** Force-assigns a team to a member, bypassing the normal
+self-service claim flow. Non-playable FCS generics are rejected, same as
+`/team claim`.
+
+## `/team release`
+
+**Syntax:** `/team release <league> <season> <team>`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `season` | **yes — required** | Does not default to the active season for this subcommand. |
+| `team` | yes | The team to release (autocompleted). |
+
+**Who can run it:** Commissioner.
+
+**What it does:** Force-releases a team back to CPU control. If the team is
+already CPU-controlled, this is a graceful no-op.
