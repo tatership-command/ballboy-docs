@@ -1,0 +1,22 @@
+# {{ .Site.Title }} — full corpus
+
+> {{ with .Site.Home.Params.summary }}{{ . }}{{ else }}Full text of every Ball Boy documentation page, concatenated for AI ingestion.{{ end }}
+
+{{ $order := slice "getting-started" "concepts" "commands" "flows" "faq" }}
+{{ range $sec := $order }}
+  {{ $inSec := slice }}
+  {{ range site.RegularPages }}
+    {{ if strings.HasPrefix .File.Dir (printf "docs/%s/" $sec) }}{{ $inSec = $inSec | append . }}{{ end }}
+  {{ end }}
+  {{ range (sort $inSec "Weight" "asc") }}
+
+---
+
+# {{ .Title }}
+
+URL: {{ .Permalink }}
+{{ with .Params.summary }}Summary: {{ . }}{{ end }}
+
+{{ partial "rag-body.txt" . }}
+  {{ end }}
+{{ end }}

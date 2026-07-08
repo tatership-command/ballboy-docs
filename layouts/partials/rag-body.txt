@@ -1,0 +1,13 @@
+{{- $body := .RawContent -}}
+{{- /* Rewrite {{< relref "/docs/x/y" >}} -> absolute URL. */ -}}
+{{- $re := `{{<\s*relref\s+"([^"]+)"\s*>}}` -}}
+{{- $body = replaceRE $re (printf "%s$1/" (strings.TrimSuffix "/" site.BaseURL)) $body -}}
+{{- /* Drop any other shortcode delimiters, keep inner text best-effort. */ -}}
+{{- $body = replaceRE `{{[<%]/?\s*([^}]*?)\s*/?[>%]}}` "" $body -}}
+{{- /* This partial is invoked from isPlainText (text/template) output
+     formats via {{ partial }}, but Hugo compiles partials with the
+     html/template escaper regardless of the calling output format, which
+     would otherwise HTML-entity-escape raw markdown (e.g. "<league>" ->
+     "&lt;league&gt;"). `safeHTML` marks the already-correct plain-text
+     string as pre-escaped so it passes through byte-for-byte. */ -}}
+{{ $body | safeHTML }}

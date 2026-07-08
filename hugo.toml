@@ -12,3 +12,34 @@ title        = "Ball Boy Docs"
 
 [markup.goldmark.renderer]
   unsafe = true   # allow raw HTML in markdown (Discord code blocks / callouts)
+
+# --- RAG outputs (spec 24 D-6) ---
+[mediaTypes]
+  [mediaTypes."text/markdown"]
+    suffixes = ["md"]
+
+[outputFormats]
+  [outputFormats.Markdown]
+    mediaType   = "text/markdown"
+    baseName    = "index"      # -> <page>/index.md
+    isPlainText = true         # Go text/template: no HTML-escaping of .RawContent
+    isHTML      = false
+    permalinkable = true
+  [outputFormats.LLMS]
+    mediaType   = "text/plain"
+    baseName    = "llms"       # -> /llms.txt
+    isPlainText = true
+    isHTML      = false
+    rel         = "alternate"
+  [outputFormats.LLMSFULL]
+    mediaType   = "text/plain"
+    baseName    = "llms-full"  # -> /llms-full.txt
+    isPlainText = true
+    isHTML      = false
+    rel         = "alternate"
+
+[outputs]
+  # RSS preserved on home (Hugo Book's default enables it; see docs-site-5-rag-outputs.md RSS-drop check).
+  home    = ["HTML", "RSS", "LLMS", "LLMSFULL"]
+  section = ["HTML"]
+  page    = ["HTML", "Markdown"]

@@ -1,0 +1,22 @@
+{{- $order := slice "getting-started" "concepts" "commands" "flows" "faq" -}}
+{{- $titles := dict "getting-started" "Getting Started" "concepts" "Concepts" "commands" "Command Reference" "flows" "Flows" "faq" "FAQ" -}}
+# {{ .Site.Title }}
+
+> {{ with .Site.Home.Params.summary }}{{ . }}{{ else }}Ball Boy is a Discord bot for running EA College Football and Madden online dynasties. This is its documentation and AI knowledge base.{{ end }}
+
+This file follows the llmstxt.org convention: each link points to the clean
+markdown twin of a documentation page.
+{{ range $sec := $order }}
+{{- $inSec := slice -}}
+{{- range site.RegularPages -}}
+{{- if strings.HasPrefix .File.Dir (printf "docs/%s/" $sec) -}}
+{{- $inSec = $inSec | append . -}}
+{{- end -}}
+{{- end }}
+{{- with $inSec }}
+## {{ index $titles $sec }}
+{{ range (sort . "Weight" "asc") -}}
+- [{{ .Title }}]({{ .Permalink }}index.md): {{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}
+{{ end -}}
+{{- end }}
+{{ end -}}
