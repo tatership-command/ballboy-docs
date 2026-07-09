@@ -100,6 +100,7 @@ games, so you report results and go live right there — see
 - {{< relref "/docs/getting-started" >}} — add Ball Boy to your server, check
   permissions, and create your first league and season.
 - {{< relref "/docs/commands" >}} — the full command reference.
+- {{< relref "/docs/changelog" >}} — release notes for every shipped version.
 - **Join the Ball Boy Discord** to get access:
   <https://discord.gg/REVjfCRpw> — see
   {{< relref "/docs/getting-started/adding-ball-boy" >}} for how membership
