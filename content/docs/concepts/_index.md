@@ -20,6 +20,8 @@ commands. This section explains them independent of any one command:
   one.
 - **Team ownership** — claiming as the single ownership primitive, CPU-controlled
   teams, and the waitlist.
+- **Teams and conferences** — the default 143-team dataset, the 12 conferences, and
+  the non-playable FCS placeholders.
 - **Roles and conferences** — how Discord roles mirror team and conference
   ownership.
 - **The roster board** — the persistent, always-up-to-date team-ownership post in

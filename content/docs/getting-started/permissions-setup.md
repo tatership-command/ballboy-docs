@@ -64,6 +64,20 @@ command comes back denied, the caller doesn't have the access level that command
 requires. Each command's specific gate is covered on its own reference page in
 {{< relref "/docs/commands" >}}.
 
+### Access levels at a glance
+
+| Level | Who has it | What it lets you do |
+|---|---|---|
+| Viewer | Any league member with at least a Viewer/lurker-level assignment (or the widest default for read commands) | Read-only: standings, schedule, team info, league info. |
+| Member | A member who owns (or has claimed) a team | Everything Viewer can, plus self-service actions like claiming, switching, or leaving a team. |
+| Commissioner | The league's creator, or anyone explicitly granted the commissioner role/flag | League and season administration: creating seasons, importing schedules, reporting results, advancing the season, managing the waitlist, force-assigning teams. |
+| Server admin | Any Discord member with the server's **Administrator** permission | League lifecycle commands that are gated at the Discord level rather than the league level — `/league create`, `/league delete`, and the admin configuration commands. |
+| Bot owner | The Discord account(s) configured as Ball Boy's owner | A global superuser: **bypasses every access check above**, in every league, on every server — used for maintenance commands like reloading team templates or emoji. |
+
+The bot-owner bypass is intentionally global and non-configurable per-league — if
+a command seems to work for you when it shouldn't, check whether your account is
+configured as a bot owner.
+
 ## Next steps
 
 - {{< relref "/docs/getting-started/first-league" >}} — create your first league,

@@ -41,7 +41,12 @@ covers both, plus linking your game and stream accounts to a team you already ow
 3. **Finish linking accounts in the Activity.** The Activity walks you through
    your identity source (Xbox, PlayStation, Steam, or a manually-entered EA
    username) and any stream links (Twitch, YouTube, or a custom URL) you want
-   attached to your profile, then a review step before you confirm.
+   attached to your profile, then a review step before you confirm. Xbox,
+   PlayStation, and Steam identities are read from **your Discord account's linked
+   connections** (the same connections you manage under Discord's own User
+   Settings → Connections) via OAuth — Ball Boy never asks for a platform
+   password. If you haven't linked one of those platforms to your Discord account,
+   the Activity falls back to a manually-entered EA username instead.
 4. **Confirm.** The Activity's confirm step writes through the same underlying
    claim used by `/team claim` — it isn't a separate write path. If you already
    own the team (the common case, arriving from the launch link), this step

@@ -88,7 +88,11 @@ claim-first ordering as `/team claim`.
 
 **Who can run it:** Viewer.
 
-**What it does:** Shows a team's owner, record, and next game.
+**What it does:** Shows an ephemeral summary of the team — its logo (when
+resolved) and display name, current owner (a member mention, or "CPU" if
+unowned), overall win-loss-tie record, conference record, and its next unplayed
+game (week and matchup, or "None" if the schedule has no upcoming game for this
+team).
 
 ## `/team assign`
 

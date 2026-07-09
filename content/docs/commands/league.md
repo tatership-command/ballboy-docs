@@ -65,7 +65,9 @@ full EA-vs-manual comparison.
 
 **Who can run it:** Viewer.
 
-**What it does:** Shows league details.
+**What it does:** Shows an ephemeral summary of the league — its display name,
+status (e.g. active), the Discord server it belongs to, its primary game, and
+its currently active season (or "not set" if none has been created yet).
 
 ## `/league list`
 

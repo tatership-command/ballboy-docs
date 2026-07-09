@@ -48,7 +48,34 @@ advance by the companion export's own week index instead (see
   championship matchups from the prior round's results as you advance through the
   bowl weeks — you only import the first round and quarterfinal games; the
   semifinals and championship are built automatically. A round can't advance past a
-  tied game — CFP games require a decisive score.
+  tied game — CFP games require a decisive score. The bracket's byes are fixed: the
+  1-seed's bye slot is filled by the winner of the 8-vs-9 first-round game, the
+  2-seed's by the winner of 7-vs-10, the 3-seed's by the winner of 6-vs-11, and the
+  4-seed's by the winner of 5-vs-12. Once the quarterfinals are done, the two
+  semifinal games are automatically named after New Year's Six bowls (Rose, Sugar,
+  Orange, Cotton, Peach, Fiesta) that weren't already used as quarterfinal bowl
+  names, in that order.
+
+## Phase-to-week-key reference
+
+Commands that take an explicit week — `/schedule week` and
+{{< relref "/docs/commands/game" >}} `/game schedule_time` among them — use the
+week key from this table, not the phase label:
+
+| Phase | Week key(s) |
+|---|---|
+| Preseason | *(no week key)* |
+| Regular season (Weeks 0–15) | `week_00` through `week_15` |
+| *(reserved gap — no phase)* | `week_16`, `week_17` |
+| Conference Championships | `week_18` |
+| Bowl Week 1 of 4 | `week_19` |
+| Bowl Week 2 of 4 | `week_20` |
+| Bowl Week 3 of 4 | `week_21` |
+| Bowl Week 4 of 4 | `week_22` |
+| Offseason phases (recap, players leaving, recruiting, signing day, training, offseason) | `week_23` through `week_31` |
+
+`week_16` and `week_17` are intentionally unused — the calendar jumps straight
+from `week_15` to Conference Championships (`week_18`).
 
 ## How it behaves
 

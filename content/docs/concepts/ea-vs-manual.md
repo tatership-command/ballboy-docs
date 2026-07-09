@@ -39,6 +39,15 @@ commands.
   template teams (138 FBS programs plus 5 non-playable FCS placeholders) as
   CPU-owned teams, ready for `/team claim`. EA-mode leagues skip this step
   entirely — their teams arrive from the companion export instead.
+- **The bundled team dataset is College Football, regardless of the league's
+  game.** Ball Boy ships a single set of team templates — the 143-team College
+  Football dataset described in
+  {{< relref "/docs/concepts/teams-and-conferences" >}} — and manual-mode seeding
+  always draws from it. A manual-mode **Madden** league still gets seeded with
+  those same 143 College Football teams; there is no separate Madden team dataset
+  yet. This is a known limitation for manual-mode Madden leagues today — an
+  EA-mode Madden league is unaffected, since its teams come from the companion
+  export instead of the bundled templates.
 - **Schedule source.** Manual mode imports its schedule via `/season schedule` (a
   CSV upload). EA-mode leagues get their schedule automatically from the companion
   export and can't use `/season schedule`.
