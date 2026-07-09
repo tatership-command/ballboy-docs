@@ -1,0 +1,62 @@
+admin auto_advance
+admin board_color
+admin board_image
+admin channels
+admin launch_cards
+admin reload_emoji
+admin reload_teams
+admin roles
+admin roles_setup
+admin roles_sync_all
+admin stream
+admin welcome
+draft auto
+draft board
+draft end
+draft join
+draft leave
+draft pause
+draft pick
+draft queue_add
+draft queue_clear
+draft queue_remove
+draft queue_view
+draft remove
+draft replace
+draft resume
+draft setup
+draft skip
+draft start
+game delete_thread
+game schedule_time
+league attach_ea
+league create
+league delete
+league info
+league list
+league settings
+schedule
+season advance
+season create
+season delete
+season prepare_week
+season result
+season rollback
+season schedule
+season status
+season sync_teams
+standings
+stream
+team assign
+team claim
+team connect
+team info
+team leave
+team release
+team switch
+teams
+waitlist add
+waitlist list
+waitlist promote
+waitlist remove
+welcome

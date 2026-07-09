@@ -1,0 +1,158 @@
+name: Sync release to docs
+
+# Receiver half of the ballboy release -> docs Auto-PR. Fired by a
+# repository_dispatch from the ballboy repo on every v* tag deploy (see
+# SYNC-SETUP.md), or run manually via workflow_dispatch for testing.
+#
+# This workflow NEVER commits to main directly — it always opens a PR for a
+# human to review and merge.
+
+on:
+  repository_dispatch:
+    types: [bot-release]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, e.g. v1.0.25"
+        required: true
+        type: string
+      note:
+        description: >-
+          Full release-note markdown (frontmatter + body) for a manual/testing
+          run. Leave blank to only exercise the no-op / guard path.
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Prepare release inputs (dispatch)
+        if: github.event_name == 'repository_dispatch'
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          NOTE_B64: ${{ github.event.client_payload.note_b64 }}
+          MANIFEST_B64: ${{ github.event.client_payload.manifest_b64 }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sync"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "$NOTE_B64" | base64 --decode > "$RUNNER_TEMP/sync/release-note.md"
+          echo "NOTE_PATH=$RUNNER_TEMP/sync/release-note.md" >> "$GITHUB_ENV"
+          echo "$MANIFEST_B64" | base64 --decode > "$RUNNER_TEMP/sync/manifest.txt"
+          echo "MANIFEST_PATH=$RUNNER_TEMP/sync/manifest.txt" >> "$GITHUB_ENV"
+
+      - name: Prepare release inputs (manual)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          VERSION: ${{ inputs.version }}
+          NOTE: ${{ inputs.note }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sync"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          if [ -n "$NOTE" ]; then
+            printf '%s\n' "$NOTE" > "$RUNNER_TEMP/sync/release-note.md"
+            echo "NOTE_PATH=$RUNNER_TEMP/sync/release-note.md" >> "$GITHUB_ENV"
+          else
+            echo "NOTE_PATH=" >> "$GITHUB_ENV"
+          fi
+          # workflow_dispatch has no manifest input — manual runs only
+          # exercise the changelog transform / no-op guard, not drift.
+          echo "MANIFEST_PATH=" >> "$GITHUB_ENV"
+
+      - name: Check for existing changelog page
+        id: existing
+        run: |
+          set -euo pipefail
+          if [ -f "content/docs/changelog/${VERSION}.md" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate changelog page
+        if: env.NOTE_PATH != ''
+        run: python3 scripts/release_to_changelog.py "$NOTE_PATH"
+
+      - name: Check command manifest drift
+        id: drift
+        if: env.MANIFEST_PATH != ''
+        run: |
+          set -euo pipefail
+          python3 scripts/check_manifest_drift.py "$MANIFEST_PATH" | tee "$RUNNER_TEMP/sync/drift-report.md"
+          if grep -q "^NO DRIFT" "$RUNNER_TEMP/sync/drift-report.md"; then
+            echo "has_drift=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_drift=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update baseline command manifest
+        if: env.MANIFEST_PATH != ''
+        run: cp "$MANIFEST_PATH" data/command-manifest.txt
+
+      - name: Decide whether to open a PR
+        id: decide
+        env:
+          EXISTS: ${{ steps.existing.outputs.exists }}
+          HAS_DRIFT: ${{ steps.drift.outputs.has_drift || 'false' }}
+        run: |
+          set -euo pipefail
+          if [ "$EXISTS" = "true" ] && [ "$HAS_DRIFT" = "false" ]; then
+            echo "open_pr=false" >> "$GITHUB_OUTPUT"
+            echo "Changelog page for $VERSION already exists and no command manifest drift was detected — skipping PR (no-op)."
+          else
+            echo "open_pr=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build PR body
+        if: steps.decide.outputs.open_pr == 'true'
+        run: |
+          set -euo pipefail
+          {
+            echo "Automated docs sync for release **${VERSION}**."
+            echo
+            echo "## Changelog"
+            echo
+            page="content/docs/changelog/${VERSION}.md"
+            if [ -f "$page" ]; then
+              summary=$(grep '^summary:' "$page" | sed -E 's/^summary: //')
+              echo "- Added \`$page\` — $summary"
+            else
+              echo "- No release note was provided for this run; changelog page not generated."
+            fi
+            echo
+            echo "## Command manifest drift"
+            echo
+            if [ -f "$RUNNER_TEMP/sync/drift-report.md" ]; then
+              cat "$RUNNER_TEMP/sync/drift-report.md"
+            else
+              echo "No candidate manifest was provided for this run."
+            fi
+          } > "$RUNNER_TEMP/sync/pr-body.md"
+
+      - name: Open pull request
+        if: steps.decide.outputs.open_pr == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: sync ${{ env.VERSION }} release"
+          branch: sync/release-${{ env.VERSION }}
+          delete-branch: true
+          title: "docs: sync ${{ env.VERSION }} release"
+          body-path: ${{ runner.temp }}/sync/pr-body.md
+          add-paths: |
+            content/docs/changelog/*.md
+            data/command-manifest.txt
