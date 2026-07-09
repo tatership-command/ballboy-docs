@@ -74,6 +74,36 @@ everyone's ready. Both paths run the exact same advance logic underneath.
   it's not ephemeral — that's intentional, so the whole league can see an advance
   in progress.
 
+## The weekly advance announcement & lurker opt-in
+
+Every successful advance also posts a separate, public **weekly announcement** —
+distinct from the confirm-thread messages above — summarizing the new week (or
+phase) for the whole league.
+
+- **One message, three embeds.** For a normal game week the announcement is a
+  single Discord message containing three stacked embeds: a **Week Header**
+  (league, year, and week/phase label), a **Games** list (every matchup for the
+  week), and an **On-Bye** list (teams with no game that week), when there are
+  any. Offseason phases (recap, recruiting, signing day, and so on) post a
+  **header-only** announcement — just the header embed, since there are no games
+  or byes to list.
+- **The ping.** By default the announcement pings `@everyone`. A league can
+  configure a specific announce role instead with
+  {{< relref "/docs/commands/admin" >}} `/admin roles announce`, so only members
+  holding that role get pinged. If the league's `@everyone`-triggered
+  auto-advance is configured and enabled, the weekly announcement's own ping is
+  suppressed entirely — see the troubleshooting note above on this — since the
+  trigger/confirm flow already notified everyone who pinged the channel.
+- **🔔 Opt In / 🔕 Opt Out buttons.** The announcement carries a row of two
+  buttons tied to the league's **lurker role** (configured with
+  {{< relref "/docs/commands/admin" >}} `/admin roles` or
+  `/league settings`). Clicking 🔔 Opt In grants you that role; clicking
+  🔕 Opt Out removes it. Holding the lurker role means Ball Boy automatically
+  adds you as a follower to every game thread it creates (both on fresh
+  provisioning and when a thread is re-provisioned), so you can follow along on
+  games you're not personally playing in without hunting through the channel
+  list for new threads every week.
+
 ## Troubleshooting
 
 - **Nothing happens after pinging `@everyone` with clear advance intent.** Check,

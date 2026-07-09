@@ -11,6 +11,8 @@ Some things you do with Ball Boy span more than one command or more than one
 Discord surface (slash commands, buttons, the Activity). These walkthroughs cover
 those end-to-end:
 
+- **Connecting a league to EA** — moving a league from manual mode to EA companion
+  mode with `/league attach_ea`.
 - **Claim and connect** — claiming a team through the Discord Activity, and linking
   an already-claimed team with `/team connect`.
 - **Game threads & results** — how a game thread is built, what the action buttons
@@ -19,5 +21,3 @@ those end-to-end:
 - **Draft** — running a full draft from setup through the final pick.
 - **Auto-advance** — advancing a season week by pinging the league in Discord.
 - **Streaming** — going live and announcing it to your league.
-
-Detailed walkthroughs for each of these are being authored.
