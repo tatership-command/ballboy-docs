@@ -61,6 +61,16 @@ by default to keep channels focused on the game itself. If you'd rather keep
 those cards, a commissioner can run `/admin launch_cards <league> keep`
 (`/admin launch_cards <league> suppress` turns auto-delete back on).
 
+**How do I get Ball Boy to ping people when I go live?**
+Both `/stream` and the in-thread **🔴 Go Live** button can notify the server when
+a stream starts. Pass `notify: Everyone` to ping `@everyone`, or
+`notify: Stream role` (or an explicit `role:`) to ping the league's configured
+stream-notify role. A commissioner sets that role with `/admin roles` and the
+`streams` announcement channel with `/admin channels` — until a stream role is
+set, there's nothing for `Stream role` to ping, so the announcement posts without
+a group tag. The opponent in a game is always pinged by name regardless. See
+{{< relref "/docs/flows/streaming" >}}.
+
 ## For commissioners
 
 **How does the season advance from week to week?**
