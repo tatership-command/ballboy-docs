@@ -10,10 +10,14 @@ bookCollapseSection: true
 Ball Boy is built around a small set of core ideas that show up across most
 commands. This section explains them independent of any one command:
 
+- **Multiple leagues in one server** — how one Discord server can host any number
+  of independent leagues, side by side.
 - **EA mode vs. manual mode** — whether a league's teams and schedule come from the
   EA companion export or from owner-run commands.
 - **Seasons and the phase calendar** — how a season moves from Preseason through the
   regular season, conference championships, bowls, and the offseason.
+- **Schedule CSV formats** — the four schedule-import CSV shapes and how to build
+  one.
 - **Team ownership** — claiming as the single ownership primitive, CPU-controlled
   teams, and the waitlist.
 - **Roles and conferences** — how Discord roles mirror team and conference

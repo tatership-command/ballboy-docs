@@ -55,7 +55,9 @@ game nights. Ball Boy takes that work off your plate:
 - **Game threads & results** — every matchup gets an auto-created thread with
   buttons to report the result, force a win, or run a fair sim; results update
   standings and post a recap automatically. See
-  {{< relref "/docs/commands/game" >}} and {{< relref "/docs/commands/season" >}}.
+  {{< relref "/docs/flows/game-threads-and-results" >}},
+  {{< relref "/docs/commands/game" >}}, and
+  {{< relref "/docs/commands/season" >}}.
 - **Standings, schedule & scoreboard** — `/standings` and `/schedule` render a
   live, in-Discord view of the season at any point. See
   {{< relref "/docs/commands/standings" >}} and
@@ -86,7 +88,11 @@ game nights. Ball Boy takes that work off your plate:
   quarterfinals; Ball Boy fills in the semifinals and championship from the
   results automatically. See {{< relref "/docs/concepts/seasons-and-phases" >}}.
 - **CSV schedule import** — bring your own regular-season, conference
-  championship, or bowl/CFP schedule into a manual-mode league.
+  championship, or bowl/CFP schedule into a manual-mode league. See
+  {{< relref "/docs/concepts/schedule-csv-formats" >}}.
+- **Multiple leagues, one server** — run as many independent leagues as you want
+  in a single Discord server, with no shared data between them. See
+  {{< relref "/docs/concepts/multiple-leagues" >}}.
 
 ## For members
 

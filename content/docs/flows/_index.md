@@ -13,6 +13,8 @@ those end-to-end:
 
 - **Claim and connect** — claiming a team through the Discord Activity, and linking
   an already-claimed team with `/team connect`.
+- **Game threads & results** — how a game thread is built, what the action buttons
+  do, and what happens when a result is recorded.
 - **Welcome** — what happens when a new member joins your league's server.
 - **Draft** — running a full draft from setup through the final pick.
 - **Auto-advance** — advancing a season week by pinging the league in Discord.
