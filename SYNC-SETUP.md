@@ -31,15 +31,30 @@ commits to `main` directly.
 
 ## One-time setup required in the `ballboy` repo (owner action)
 
-The sender lives in `ballboy`, not here, but it needs **one secret** created
-in the **`ballboy`** repo's Actions settings:
+The sender lives in `ballboy`, not here. It authenticates as a **GitHub App**
+rather than a personal access token, so the credential never expires and
+never needs annual rotation:
 
-- **`DOCS_SYNC_TOKEN`** — a fine-grained personal access token (or a GitHub
-  App installation token) scoped to the `tatership-command/ballboy-docs`
-  repository with **Contents: Read and write** permission (the minimum scope
-  that allows sending a `repository_dispatch` event to this repo). This repo
-  itself needs no read token — `sync-release.yml` uses the default
-  `GITHUB_TOKEN` to open its PR, since it only ever operates on its own repo.
+1. Create a GitHub App under the `tatership-command` org (Settings →
+   Developer settings → GitHub Apps → New GitHub App). Give it
+   **Repository permissions → Contents: Read and write** (the minimum scope
+   that allows sending a `repository_dispatch` event to this repo). No other
+   permissions are needed.
+2. Install the App on the **`ballboy-docs`** repository only.
+3. From the App's settings page, copy its **App ID** and generate a
+   **private key** (downloads a `.pem` file).
+4. In the **`ballboy`** repo's Actions settings, save two secrets:
+   - **`DOCS_SYNC_APP_ID`** — the App ID from step 3.
+   - **`DOCS_SYNC_APP_PRIVATE_KEY`** — the full contents of the downloaded
+     `.pem` private-key file.
+
+The `notify-docs.yml` workflow in `ballboy` mints a short-lived installation
+token from these two secrets at runtime (via `actions/create-github-app-token`)
+and uses it to send the `repository_dispatch`. Unlike a fine-grained PAT,
+**the App's private key does not expire** — there is no annual rotation to
+remember. This repo itself needs no read token — `sync-release.yml` uses the
+default `GITHUB_TOKEN` to open its PR, since it only ever operates on its own
+repo.
 
 Nothing needs to be configured in `ballboy-docs` for the receiver to work —
 `sync-release.yml` is self-contained and uses the default `GITHUB_TOKEN`
