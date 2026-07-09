@@ -42,13 +42,14 @@ the team's owner.
 
 ## How it behaves
 
-Self-service `/team claim` only offers teams that are actually claimable —
-non-playable and already-owned teams don't appear in its autocomplete. A
-commissioner's `/team assign` and `/team release` bypass that self-service
-restriction (while still respecting the non-playable guard), which is useful for
-onboarding a member who can't run the command themselves, or reclaiming an
-inactive member's team. Releasing an already-CPU team is a graceful no-op — a
-commissioner can run `/team release` without checking state first.
+Self-service claiming — `/team claim`, which opens Ball Boy's Activity claim
+wizard — only offers teams that are actually claimable in its picker; non-playable
+and already-owned teams don't appear. A commissioner's `/team assign` and `/team
+release` bypass that self-service restriction (while still respecting the
+non-playable guard), which is useful for onboarding a member who can't run the
+command themselves, or reclaiming an inactive member's team. Releasing an
+already-CPU team is a graceful no-op — a commissioner can run `/team release`
+without checking state first.
 
 ## Related commands
 

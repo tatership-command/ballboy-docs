@@ -12,26 +12,25 @@ unless noted otherwise.
 
 ## `/team claim`
 
-**Syntax:** `/team claim <league> <team> [season]`
+**Syntax:** `/team claim`
 
-| Option | Required | Description |
-|---|---|---|
-| `league` | yes | The league (autocompleted). |
-| `team` | yes | The team to claim — autocompletes to **currently claimable** teams only. |
-| `season` | no | Defaults to the league's active season. |
+Takes no options — it's a pure Activity launcher, not an inline claim.
 
 **Who can run it:** Any server member.
 
-**What it does:** Claims an available team — this is Ball Boy's single ownership
-primitive. The 5 generic FCS placeholder teams are non-playable and are always
-rejected. A successful claim also fires the Activity launch handoff, offering a
-link to finish connecting game/stream accounts in the Discord Activity.
+**What it does:** Opens Ball Boy's claim Activity right inside Discord. The
+wizard walks you through picking your league and team, linking your game and
+stream accounts, and a review step before you confirm — the confirm step inside
+the Activity is where the actual claim write happens (the same single ownership
+primitive used by every other claim-shaped action, including `/team switch` and
+a commissioner's `/team assign`).
 
-**Notes:** Claiming a new team while already owning one releases the prior team(s)
-back to CPU as part of the same operation (claim-first ordering, so you're never
-left ownerless mid-operation). See {{< relref "/docs/concepts" >}} for the
-ownership model, and {{< relref "/docs/flows" >}} for the Activity claim
-walkthrough.
+**Notes:** Claiming a new team while already owning one still releases the prior
+team(s) back to CPU as part of the same operation (claim-first ordering, so
+you're never left ownerless mid-claim) — that logic runs inside the Activity's
+confirm step now. The 5 generic FCS placeholder teams are non-playable and never
+offered as a choice. See {{< relref "/docs/concepts" >}} for the ownership
+model, and {{< relref "/docs/flows" >}} for the Activity claim walkthrough.
 
 ## `/team connect`
 

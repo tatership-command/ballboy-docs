@@ -36,13 +36,12 @@ short "creating…" acknowledgment, then posts the real result once it finishes.
 
 ## Claim a team
 
-`/team claim <league> <team> [season]` is how you take ownership of a team — it's
-the single ownership primitive in Ball Boy. On success, Ball Boy replies with
-`Claimed \`{team name}\`.`. The `team` option autocompletes to the teams that are
-currently claimable, by their display name.
-
-You can also claim a team through the **Discord Activity** claim flow, without
-typing a slash command. See {{< relref "/docs/flows" >}} for the walkthrough.
+`/team claim` takes no options — it opens Ball Boy's **Discord Activity** claim
+wizard right inside Discord (you can also reach it from Discord's app launcher).
+Pick your league and team, link accounts, and confirm inside the wizard; the
+confirm step is the single ownership primitive in Ball Boy, and the same write
+every other claim-shaped action funnels through. See {{< relref "/docs/flows" >}}
+for the full walkthrough.
 
 ## Where to go next
 

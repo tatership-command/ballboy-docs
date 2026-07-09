@@ -26,7 +26,7 @@ admins or commissioners can run `/welcome`" — that wording is inaccurate; the
 actual gate is Server admin or Bot owner only.
 
 **What it does:** Posts a how-to-claim help embed publicly in the current channel,
-covering both the `/team claim` slash path and the Discord Activity claim path.
+covering `/team claim` — Ball Boy's Discord Activity claim wizard.
 
 **Notes:** This is the manual/on-demand counterpart to Ball Boy's automatic
 new-member welcome flow, configured via {{< relref "/docs/commands/admin" >}}

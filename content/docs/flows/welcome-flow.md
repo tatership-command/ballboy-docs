@@ -43,12 +43,13 @@ member actually sees.
    process, so re-triggering the same event again (e.g. losing and regaining the
    watched role) doesn't post a duplicate welcome.
 5. **The welcome message posts.** Ball Boy pings the new member and posts a public
-   embed in the configured channel with condensed claim instructions — both the
-   `/team claim` slash path and the Discord Activity path — plus your in-game
+   embed in the configured channel with condensed claim instructions —
+   `/team claim`, which opens Ball Boy's claim Activity — plus your in-game
    league name and password if configured (shown as "none required" if no
    password is set).
-6. **The new member claims a team.** They follow either path in the message — see
-   {{< relref "/docs/flows/claim-and-connect" >}} for the full claim walkthrough.
+6. **The new member claims a team.** They run `/team claim` from the message —
+   see {{< relref "/docs/flows/claim-and-connect" >}} for the full claim
+   walkthrough.
 
 This flow has a single primary actor configuring it (the admin) and a second actor
 receiving it (the new member) — there's no multi-party coordination beyond that.
