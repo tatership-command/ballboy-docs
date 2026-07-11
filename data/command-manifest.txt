@@ -21,6 +21,7 @@ draft queue_add
 draft queue_clear
 draft queue_remove
 draft queue_view
+draft race
 draft remove
 draft replace
 draft resume
