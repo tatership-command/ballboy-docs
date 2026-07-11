@@ -31,8 +31,15 @@ see the `/draft pick` note for the one case where that check surfaced a correcti
 **Who can run it:** Commissioner.
 
 **What it does:** Opens an ephemeral configuration panel — participants, pick
-timer, and on-timeout behavior — with a Create Draft button that finalizes the
-draft in `pending` status.
+timer, on-timeout behavior, and **how the pick order is decided** — with a Create
+Draft button that finalizes the draft in `pending` status. The order-method choice
+has two settings:
+
+- **Set order manually** — the pick order is simply the order you selected the
+  participants in. The draft board posts right away.
+- **🎲 Race for order** — the pick order is decided by a live, animated race you
+  run inside the Ball Boy Activity (see `/draft race` below). No board is posted
+  until you lock the result in.
 
 ## `/draft join`
 
@@ -103,6 +110,38 @@ their slot in the order.
 
 **What it does:** Transitions the draft from `pending` to `in_progress`, starting
 the pick clock.
+
+## `/draft race`
+
+**Syntax:** `/draft race <league> [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `season` | no | Defaults to the league's active season. |
+
+**Who can run it:** Commissioner.
+
+**What it does:** Only meaningful for a draft created with the **🎲 Race for
+order** method (see `/draft setup`). It posts a public nudge telling participants
+to open the Ball Boy Activity to watch the order get decided. It does **not**
+compute or save an order itself — the race is run interactively in the Activity.
+
+**How the race works (in the Activity):**
+
+1. Any participant can open the Activity to watch; a **commissioner** presses
+   **▶ Start Race** to run the animated race. Everyone watching sees the same
+   race — each manager runs in their own lane (shown with their Discord picture
+   and name), and the pick order fills in live as each racer crosses the finish
+   line.
+2. Nothing is saved yet. The commissioner can press **🎲 Race Again** to re-roll
+   as many times as they like, or **↻ Rewatch** to replay the current race.
+3. When happy, the commissioner presses **✅ Set Draft Order** — *this* is the
+   moment the pick order is saved and the draft board is posted. After that, run
+   `/draft start` to begin picking.
+
+The race is fair (every manager has an equal shot at any position) and the same
+roll always animates identically for everyone.
 
 ## `/draft pick`
 

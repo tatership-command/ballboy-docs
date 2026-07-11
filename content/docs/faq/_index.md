@@ -95,6 +95,17 @@ you prefer. A normal text channel gets one public thread per game; a forum
 channel gets one forum post per game instead, with the same starter content and
 action buttons. See {{< relref "/docs/flows/game-threads-and-results" >}}.
 
+**How do I decide the draft pick order — can I race for it?**
+Yes. When you run `/draft setup`, the panel asks how the pick order is decided:
+**manual** (the order you selected the participants) or **🎲 race for order**. If
+you pick race, `/draft race` posts a nudge for everyone to open the Ball Boy
+Activity, where a commissioner presses **▶ Start Race** to run a live, animated
+race — each manager in their own lane with their Discord picture and name.
+Nothing is locked until you press **✅ Set Draft Order** (re-roll with **🎲 Race
+Again**, or **↻ Rewatch**, as much as you like first); that's the moment the order
+saves and the draft board posts. The race gives every manager an equal chance at
+any position. See {{< relref "/docs/flows/draft-walkthrough" >}}.
+
 ## Troubleshooting
 
 **Why is my command denied?**
