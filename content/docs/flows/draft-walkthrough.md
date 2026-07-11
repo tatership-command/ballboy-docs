@@ -27,13 +27,26 @@ progress.
 1. **A commissioner configures the draft.** {{< relref "/docs/commands/draft" >}}
    `/draft setup` opens an ephemeral panel to set the pick timer, what happens on
    timeout (autopick, skip, or pause), the skip destination (back of line, swap
-   with next, or removed), the personal-queue size cap, and the autopick strategy.
+   with next, or removed), the personal-queue size cap, the autopick strategy, and
+   **how the pick order is decided** — either **manual** (the order you picked the
+   participants in) or **🎲 race for order** (decided by a live race, see step 2b).
    This creates the draft in `pending` status — nothing else can happen until it
    starts.
 2. **Members join the pool.** Any server member runs `/draft join` to enter the
    draft order. `/draft leave` removes yourself from the un-picked portion of the
    pool. A commissioner can also `/draft remove` a participant or `/draft replace`
    one participant with another, keeping their slot.
+
+   **2b. (Race-order drafts only) The order is decided by a live race.** If the
+   draft was set up with **🎲 race for order**, the pick order isn't set yet.
+   `/draft race` posts a nudge telling participants to open the Ball Boy Activity.
+   There, a commissioner presses **▶ Start Race** to run an animated race —
+   everyone watching sees the same result, each manager in their own lane (with
+   their Discord picture and name), and the order fills in live as racers finish.
+   Nothing is saved until the commissioner presses **✅ Set Draft Order** (they can
+   press **🎲 Race Again** to re-roll, or **↻ Rewatch**, first). Setting the order
+   is what saves it and posts the draft board. The race is fair — every manager has
+   an equal chance at any position.
 3. **The commissioner starts the draft.** `/draft start` transitions it from
    `pending` to `in_progress` and starts the pick clock for the first participant
    in the order.
