@@ -37,6 +37,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write   # to workflow_dispatch pages.yml after an auto-commit
 
 jobs:
   sync:
@@ -169,10 +170,24 @@ jobs:
             echo "nothing to commit for $VERSION"; exit 0
           fi
           git commit -m "docs: sync ${VERSION} release"
-          # Push with the App-token remote (NOT the persisted GITHUB_TOKEN) so the
-          # push cascades and pages.yml rebuilds the site.
+          # Push with the App-token remote so the commit is authored by the sync bot
+          # rather than github-actions[bot]. (A push alone does NOT rebuild the site —
+          # neither a GITHUB_TOKEN push nor an App-token push reliably triggers pages.yml
+          # here — so the next step dispatches the Pages build explicitly.)
           git push "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:main"
-          echo "Committed ${VERSION} changelog directly to main — Pages will rebuild."
+          echo "Committed ${VERSION} changelog directly to main."
+
+      - name: Trigger Pages rebuild
+        if: steps.decide.outputs.mode == 'commit'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # workflow_dispatch is the one event that DOES fire from the default
+          # GITHUB_TOKEN (GitHub's anti-recursion carve-out), so this reliably
+          # rebuilds the site against the commit we just pushed to main.
+          gh workflow run pages.yml --repo "${GITHUB_REPOSITORY}" --ref main
+          echo "Dispatched pages.yml to rebuild the docs site."
 
       - name: Build PR body
         if: steps.decide.outputs.mode == 'pr'
