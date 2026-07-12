@@ -4,8 +4,19 @@ name: Sync release to docs
 # repository_dispatch from the ballboy repo on every v* tag deploy (see
 # SYNC-SETUP.md), or run manually via workflow_dispatch for testing.
 #
-# This workflow NEVER commits to main directly — it always opens a PR for a
-# human to review and merge.
+# HYBRID MODE (see the "Decide sync mode" step):
+#   * No command drift  -> commit the changelog straight to main via a GitHub
+#     App token, so Pages rebuilds (a default-GITHUB_TOKEN push does NOT trigger
+#     downstream workflows — anti-recursion — so we mint an App token instead).
+#     Zero human touch.
+#   * Command drift      -> open a PR (as before) AND DM the owner, because drift
+#     means the FAQ / feature-doc pages may need a hand-edit — exactly when a
+#     human should be in the loop.
+#   * App secrets absent -> gracefully falls back to always-open-a-PR (today's
+#     behavior), so this workflow is safe to ship before the secrets are added.
+#
+# Secrets used (all optional; each guarded): DOCS_SYNC_APP_ID +
+# DOCS_SYNC_APP_PRIVATE_KEY (auto-commit to main) and PROD_DISCORD_TOKEN (owner DM).
 
 on:
   repository_dispatch:
@@ -103,22 +114,68 @@ jobs:
         if: env.MANIFEST_PATH != ''
         run: cp "$MANIFEST_PATH" data/command-manifest.txt
 
-      - name: Decide whether to open a PR
+      - name: Check auto-commit app is configured
+        id: appcfg
+        env:
+          APP_ID: ${{ secrets.DOCS_SYNC_APP_ID }}
+          APP_KEY: ${{ secrets.DOCS_SYNC_APP_PRIVATE_KEY }}
+        run: |
+          if [ -n "${APP_ID:-}" ] && [ -n "${APP_KEY:-}" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "DOCS_SYNC_APP_ID / DOCS_SYNC_APP_PRIVATE_KEY not set — auto-commit disabled; will open a PR instead."
+          fi
+
+      - name: Decide sync mode
         id: decide
         env:
           EXISTS: ${{ steps.existing.outputs.exists }}
           HAS_DRIFT: ${{ steps.drift.outputs.has_drift || 'false' }}
+          APP_OK: ${{ steps.appcfg.outputs.configured }}
         run: |
           set -euo pipefail
-          if [ "$EXISTS" = "true" ] && [ "$HAS_DRIFT" = "false" ]; then
-            echo "open_pr=false" >> "$GITHUB_OUTPUT"
-            echo "Changelog page for $VERSION already exists and no command manifest drift was detected — skipping PR (no-op)."
+          # Modes: noop (nothing to do) | commit (auto to main) | pr (needs a human).
+          if [ "$HAS_DRIFT" = "true" ]; then
+            MODE=pr        # drift => the owner may need to hand-edit FAQ/feature docs
+          elif [ "$EXISTS" = "true" ]; then
+            MODE=noop      # changelog already present and no drift
+          elif [ "$APP_OK" = "true" ]; then
+            MODE=commit    # new changelog, no drift, App token available => auto to main
           else
-            echo "open_pr=true" >> "$GITHUB_OUTPUT"
+            MODE=pr        # would auto-commit, but no App token => fall back to PR
           fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "Sync mode: $MODE (exists=$EXISTS drift=$HAS_DRIFT app=$APP_OK)"
+
+      - name: Mint installation token (auto-commit)
+        if: steps.decide.outputs.mode == 'commit'
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DOCS_SYNC_APP_ID }}
+          private-key: ${{ secrets.DOCS_SYNC_APP_PRIVATE_KEY }}
+
+      - name: Commit changelog to main
+        if: steps.decide.outputs.mode == 'commit'
+        env:
+          TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "ballboy-docs-sync[bot]"
+          git config user.email "ballboy-docs-sync[bot]@users.noreply.github.com"
+          git add content/docs/changelog/*.md data/command-manifest.txt || true
+          if git diff --cached --quiet; then
+            echo "nothing to commit for $VERSION"; exit 0
+          fi
+          git commit -m "docs: sync ${VERSION} release"
+          # Push with the App-token remote (NOT the persisted GITHUB_TOKEN) so the
+          # push cascades and pages.yml rebuilds the site.
+          git push "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:main"
+          echo "Committed ${VERSION} changelog directly to main — Pages will rebuild."
 
       - name: Build PR body
-        if: steps.decide.outputs.open_pr == 'true'
+        if: steps.decide.outputs.mode == 'pr'
         run: |
           set -euo pipefail
           {
@@ -144,7 +201,8 @@ jobs:
           } > "$RUNNER_TEMP/sync/pr-body.md"
 
       - name: Open pull request
-        if: steps.decide.outputs.open_pr == 'true'
+        id: cpr
+        if: steps.decide.outputs.mode == 'pr'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -156,3 +214,31 @@ jobs:
           add-paths: |
             content/docs/changelog/*.md
             data/command-manifest.txt
+
+      - name: DM the owner about the PR
+        if: steps.decide.outputs.mode == 'pr' && steps.cpr.outputs.pull-request-url != ''
+        env:
+          DISCORD_TOKEN: ${{ secrets.PROD_DISCORD_TOKEN }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+        run: |
+          set -uo pipefail
+          if [ -z "${DISCORD_TOKEN:-}" ]; then
+            echo "PROD_DISCORD_TOKEN not set — skipping owner DM."; exit 0
+          fi
+          OWNER_ID="441675650261319701"   # craigeous
+          MSG="📝 Ball Boy docs sync for **${VERSION}** opened a PR — command drift was detected, so the FAQ / feature-doc pages may need a hand-edit. Review & merge: ${PR_URL}"
+          DM=$(curl -sS -X POST \
+            -H "Authorization: Bot ${DISCORD_TOKEN}" \
+            -H "Content-Type: application/json" \
+            https://discord.com/api/v10/users/@me/channels \
+            -d '{"recipient_id":"'"${OWNER_ID}"'"}' | jq -r '.id // empty')
+          if [ -z "$DM" ]; then
+            echo "could not open DM channel (non-fatal)"; exit 0
+          fi
+          curl -sS -o /dev/null -w "owner DM post: HTTP %{http_code}\n" -X POST \
+            -H "Authorization: Bot ${DISCORD_TOKEN}" \
+            -H "Content-Type: application/json" \
+            "https://discord.com/api/v10/channels/${DM}/messages" \
+            -d "$(jq -n --arg c "$MSG" '{content:$c}')"
+          # Never fail the sync over a notification hiccup.
+          exit 0
