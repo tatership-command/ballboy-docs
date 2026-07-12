@@ -61,3 +61,4 @@ waitlist list
 waitlist promote
 waitlist remove
 welcome
+zz_synctest ping
