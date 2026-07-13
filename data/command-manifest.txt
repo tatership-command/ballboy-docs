@@ -6,6 +6,7 @@ admin launch_cards
 admin notify_mode
 admin reload_emoji
 admin reload_teams
+admin role_color
 admin roles
 admin roles_setup
 admin roles_sync_all
