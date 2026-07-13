@@ -167,6 +167,42 @@ color for several other embeds across the bot when no more specific color applie
 and `url` are supplied, the uploaded `image` wins. If neither is supplied, the
 header image is cleared.
 
+## `/admin role_color`
+
+**Syntax:** `/admin role_color <league> <team> <source> [brighten] [season]`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `team` | yes | The team whose Discord role color to set (autocompleted). |
+| `source` | yes | `primary`, `secondary`, or `clear`. Picks which of the team's stored brand colors to paint its role, or clears a previous override. |
+| `brighten` | no | Lighten the color by N percentage points of HSL lightness (0–40) so dark brand colors stay readable on Discord's dark theme. |
+| `season` | no | Season (defaults to the current one). |
+
+**Who can run it:** Commissioner.
+
+**What it does:** Sets a team's Discord role color from its stored primary or
+secondary brand color, with an optional brighten bump. `clear` removes the
+override and reverts the role to the team's default color. The live Discord role
+is recolored immediately.
+
+## `/admin notify_mode`
+
+**Syntax:** `/admin notify_mode <league> <mode>`
+
+| Option | Required | Description |
+|---|---|---|
+| `league` | yes | The league (autocompleted). |
+| `mode` | yes | `ping` (default) or `thread`. |
+
+**Who can run it:** Server admin.
+
+**What it does:** Chooses how members who opt into game-thread notifications get
+notified each week. `ping` posts a quiet role mention alongside the game thread
+(no "added to thread" system message); `thread` adds opted-in members to each
+game thread as followers. Members opt in with the 🔔 buttons on the weekly
+advance announcement.
+
 ## `/admin launch_cards`
 
 **Syntax:** `/admin launch_cards <league> <mode>`
