@@ -3,6 +3,7 @@ admin board_color
 admin board_image
 admin channels
 admin launch_cards
+admin notify_mode
 admin reload_emoji
 admin reload_teams
 admin roles
