@@ -12,6 +12,8 @@ admin roles_setup
 admin roles_sync_all
 admin stream
 admin welcome
+conference assign
+conference manage
 draft auto
 draft board
 draft end
