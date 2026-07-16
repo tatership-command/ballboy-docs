@@ -1,6 +1,7 @@
 admin auto_advance
 admin board_color
 admin board_image
+admin cfp_preview
 admin channels
 admin launch_cards
 admin notify_mode
