@@ -1,3 +1,4 @@
+admin access
 admin auto_advance
 admin board_color
 admin board_image
