@@ -13,9 +13,9 @@ role features — creates and orders Discord roles. Each of those needs a specif
 Discord permission. If Ball Boy is missing one, the feature that depends on it will
 silently fail or come back as a "command denied" error.
 
-## The `/admin roles setup` preflight
+## The `/admin roles_setup` preflight
 
-Run `/admin roles setup` first, and again any time something isn't working. It is
+Run `/admin roles_setup` first, and again any time something isn't working. It is
 a **read-only** command that checks every permission Ball Boy actually uses and
 reports, for each one:
 
@@ -35,7 +35,7 @@ took.
 - Attach Files
 - Read Message History
 - Mention Everyone / All Roles
-- Manage Messages
+- Pin Messages
 - Create Public Threads
 - Send Messages in Threads
 - Manage Threads
@@ -50,11 +50,12 @@ For team and conference roles (roles that mirror who owns which team), Ball Boy'
 own role has to sit **above** the roles it creates and manages — Discord won't let
 a bot assign or reorder a role that outranks it.
 
-`/admin roles setup` checks that Ball Boy has a role at all. The deeper check —
-that Ball Boy's role sits above every team and conference role it manages — is
-enforced when you run `/admin roles sync_all`: if a managed role currently
-outranks Ball Boy, sync_all aborts with a clear message telling you to move Ball
-Boy's role up, rather than failing partway through.
+`/admin roles_setup` checks that Ball Boy has a role at all. The deeper check —
+that Ball Boy's role sits above every team and conference role it manages — happens
+automatically each time you run `/admin roles_sync_all`: it never aborts because of
+role position. Any role the sync can't reorder (because it currently outranks Ball
+Boy) is simply left where it is, and the reply lists those roles by name so you
+know to move Ball Boy's role up — everything else still gets synced.
 
 ## "Command denied" troubleshooting
 

@@ -13,6 +13,6 @@ bot" to "I have a league, a season, and a claimed team," in reading order:
 1. {{< relref "/docs/getting-started/adding-ball-boy" >}} — join the Ball Boy
    Discord, get the invite link, add the bot, and run its guided setup flow.
 2. {{< relref "/docs/getting-started/permissions-setup" >}} — check and fix Discord
-   permissions with `/admin roles setup`.
+   permissions with `/admin roles_setup`.
 3. {{< relref "/docs/getting-started/first-league" >}} — create a league, create a
    season, and claim a team.
