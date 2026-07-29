@@ -20,17 +20,25 @@ it from the sidebar, or copy a question's link to share the exact answer.
 ## For members
 
 - [How do I claim a team?]({{< relref "/docs/faq/claim-a-team" >}})
+- [How does the waitlist work?]({{< relref "/docs/faq/waitlist" >}})
+- [How do I link my gamertag or stream links after I already own a team?]({{< relref "/docs/faq/team-connect" >}})
 - [I own a team, but Ball Boy says I don't have access to a command.]({{< relref "/docs/faq/owner-command-access" >}})
 - [Why did the bot delete the little "used Launch" card after I opened the Activity?]({{< relref "/docs/faq/launch-card-deleted" >}})
 - [How do I get Ball Boy to ping people when I go live?]({{< relref "/docs/faq/stream-notifications" >}})
+- [Does Ball Boy announce automatically when I go live on Twitch?]({{< relref "/docs/faq/stream-auto-detect" >}})
 - [How do I get notified when it's time to play my games?]({{< relref "/docs/faq/game-notifications" >}})
 - [How do I schedule a game time?]({{< relref "/docs/faq/schedule-a-game-time" >}})
 
 ## For commissioners
 
 - [How does the season advance from week to week?]({{< relref "/docs/faq/season-advance" >}})
+- [How do I make someone a commissioner or admin?]({{< relref "/docs/faq/admin-access" >}})
 - [How do I set up roles, and why can't Ball Boy create team/conference roles?]({{< relref "/docs/faq/roles-setup" >}})
+- [Can I build my schedule without uploading a CSV?]({{< relref "/docs/faq/manage-schedule-activity" >}})
 - [Should game threads be a text channel or a forum channel?]({{< relref "/docs/faq/game-thread-channel-type" >}})
+- [A team I need isn't in Ball Boy's 143-team list — can I add it?]({{< relref "/docs/faq/custom-teams" >}})
+- [How do I move a team to a different conference?]({{< relref "/docs/faq/conference-assign" >}})
+- [Can Ball Boy automatically welcome new members?]({{< relref "/docs/faq/admin-welcome" >}})
 - [How do I decide the draft pick order — can I race for it?]({{< relref "/docs/faq/draft-pick-order" >}})
 
 ## Troubleshooting
