@@ -7,7 +7,7 @@ bookCollapseSection: true
 
 # Command Reference
 
-Ball Boy registers twelve top-level slash commands. Each will get its own reference
+Ball Boy registers thirteen top-level slash commands. Each has its own reference
 page covering its subcommands, options, permission gate, and effect:
 
 - `/league` — create, configure, inspect, and delete a league; connect it to the EA
@@ -25,5 +25,5 @@ page covering its subcommands, options, permission gate, and effect:
 - `/welcome` — post the "how to claim a team" help message.
 - `/stream` — announce a stream to your league.
 - `/draft` — run a team draft: setup, join, pick, and the on-clock timer.
-
-Reference pages for each command are being authored.
+- `/conference` — move a team into a different conference, one at a time or in
+  bulk.

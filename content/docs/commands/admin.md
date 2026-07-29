@@ -11,10 +11,11 @@ provisioning, a permission preflight check, and two bot-owner-only maintenance
 commands. The whole group carries `default_member_permissions = "ADMINISTRATOR"`,
 so Discord hides it from non-admin members in the slash-command picker; unless
 noted otherwise, every subcommand below additionally requires the **Server admin**
-(Discord **Administrator**) gate at runtime. Channel and role options are native
-Discord pickers. Most subcommands also expose a `clear` choice enum to unset a
-previously-configured field — the clear choice is applied last, so it always wins
-over any concurrently-supplied picker value.
+(Discord **Administrator**) gate at runtime. Channel options are native Discord
+pickers; role options are free text with autocomplete (see `/admin roles` below).
+Most subcommands also expose a `clear` choice enum to unset a previously-configured
+field — the clear choice is applied last, so it always wins over any
+concurrently-supplied value.
 
 ## `/admin channels`
 
@@ -45,26 +46,58 @@ optional and independent — set as many or as few as you like in one call.
 
 ## `/admin roles`
 
-**Syntax:** `/admin roles <league> [role pickers] [stream_notify] [clear]`
+**Syntax:** `/admin roles <league> [role fields] [stream_notify] [clear]`
 
 | Option | Required | Description |
 |---|---|---|
 | `league` | yes | The league (autocompleted). |
 | `admin` | no | Admin role. |
 | `commissioner` | no | Commissioner role. |
-| `lurker` | no | Lurker (auto-follow) role. |
+| `lurker` | no | Lurker (notify for all games) role. |
+| `lurker_uvu` | no | User-games-only notify role — notified only for games where both teams are owned by a member. |
 | `announce` | no | Announce-ping role (used instead of `@everyone` for weekly advance pings). |
 | `stream` | no | Stream-notify role. |
-| `stream_notify` | no | Choice: `everyone` — sets the stream ping to `@everyone` instead of a specific role. |
+| `stream_notify` | no | Choice: `everyone` — sets the stream ping to `@everyone` instead of a specific role (wins over a typed `stream` value). |
 | `clear` | no | Choice of which field to clear. |
 
 **Who can run it:** Server admin.
 
 **What it does:** Configures the league's role routing.
 
-**Notes:** See {{< relref "/docs/commands/admin" >}} `/admin roles_sync_all` below
-for bulk team/conference role provisioning — a separate operation from this
-command, which only sets the fixed admin/commissioner/lurker/announce/stream roles.
+**Notes:** Each role field is **free text with autocomplete**, not a Discord role
+picker. Typing (or picking a suggested) existing role name **adopts** that role
+(renaming it to Ball Boy's convention if needed); typing a name that doesn't match
+any existing role **creates** a new one; pasting a role ID directly targets that
+role by ID, but only if it matches a role that already exists in this server — an
+unrecognized ID is rejected with no changes made. If your input would create or
+adopt a role, Ball Boy asks you to confirm before making the change. See
+{{< relref "/docs/commands/admin" >}} `/admin roles_sync_all` below for bulk
+team/conference role provisioning — a separate operation from this command, which
+only sets the fixed admin/commissioner/lurker/user-games/announce/stream roles.
+
+## `/admin access`
+
+**Syntax:** `/admin access <user> <role> <action> [league]`
+
+| Option | Required | Description |
+|---|---|---|
+| `user` | yes | The member to grant/revoke staff access for (user picker). |
+| `role` | yes | Which staff tier: `commissioner` or `admin`. |
+| `action` | yes | `grant` or `revoke`. |
+| `league` | no | The league (autocompleted). Omit if this server only has one league. |
+
+**Who can run it:** Server admin, and additionally gated to Commissioner at the
+league level.
+
+**What it does:** Grants or revokes the commissioner/admin access flag that Ball
+Boy's Activity (and every other permission check) actually reads. A Discord role
+alone isn't enough — someone with only the Discord role but no matching flag on
+their member record would pass Discord-side commands but still be treated as a
+regular member inside the Activity. `/admin access` writes that flag directly,
+then best-effort syncs the matching Discord role (`admin` or `commissioner` from
+{{< relref "/docs/commands/admin" >}} `/admin roles`) to match. A revoke whose
+Discord role removal fails is reported back to you so you can re-run it — access
+isn't fully gone until the role is too, since either one still grants it.
 
 ## `/admin auto_advance`
 
@@ -92,24 +125,34 @@ underlying advance logic this triggers.
 
 ## `/admin stream`
 
-**Syntax:** `/admin stream <league> [keywords] [category]`
+**Syntax:** `/admin stream <league> [keywords] [category] [match_team_names] [match_week] [match_league_name]`
 
 | Option | Required | Description |
 |---|---|---|
 | `league` | yes | The league (autocompleted). |
-| `keywords` | no | Comma-separated keywords to match in a member's stream title. |
-| `category` | no | Exact game/category name to match. |
+| `keywords` | no | Comma-separated keywords to match in a member's stream title (empty clears). |
+| `category` | no | Exact game/category name to match (empty clears). |
+| `match_team_names` | no | Boolean — match when the title names one of the two teams in the streamer's current game. Default **on**. |
+| `match_week` | no | Boolean — match when the title contains the current week number (e.g. "week 5", "wk 5"). Default **off**. |
+| `match_league_name` | no | Boolean — match when the title contains the league's name. Default **on**. |
 
 **Who can run it:** Server admin.
 
-**What it does:** Configures automatic stream-presence detection — Ball Boy watches
-member Discord presences for a matching stream and posts an announcement.
+**What it does:** Configures Ball Boy's Twitch stream auto-detection matching
+criteria — Ball Boy watches for the streamer going live on Twitch and posts a
+"going live" announcement once every **enabled** signal matches (AND, not OR),
+so streaming something else — a different league, a different week — never trips
+a false alert. Requires a `streams` channel or a game thread to post the
+announcement to; set the streams channel with {{< relref "/docs/commands/admin"
+>}} `/admin channels`, not here.
 
 **Notes:** The poise function backing this subcommand is internally named
 `admin_stream_detect`, but the **user-facing command name is `/admin stream`**
-(`rename = "stream"`). Requires the Presence privileged Discord gateway intent to
-be enabled for the bot. Automatic presence-based detection is a separate feature
-from the manual {{< relref "/docs/commands/stream" >}} `/stream` command and the
+(`rename = "stream"`). `keywords`/`category` also drive a legacy Discord-presence
+fallback path (requires the Presence privileged Discord gateway intent to be
+enabled for the bot); the primary detection path is the Twitch EventSub webhook
+receiver, which all five signals feed. Auto-detection is a separate feature from
+the manual {{< relref "/docs/commands/stream" >}} `/stream` command and the
 game-thread Go Live button.
 
 ## `/admin welcome`
@@ -249,7 +292,7 @@ performs no additional access check).
 
 **What it does:** A **read-only** permission preflight: reports ✅/❌ for every
 Discord permission Ball Boy needs (View Channel, Send Messages, Embed Links,
-Attach Files, Read Message History, Mention Everyone/All Roles, Manage Messages,
+Attach Files, Read Message History, Mention Everyone/All Roles, Pin Messages,
 Create Public Threads, Send Messages in Threads, Manage Threads, Manage Roles) plus
 whether Ball Boy's role sits above its managed roles, with fix hints for anything
 missing. It makes **no mutations** — safe to run anytime.

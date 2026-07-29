@@ -4,14 +4,14 @@ summary: "How Ball Boy's team, conference, and league roles mirror ownership and
 weight: 40
 ---
 <!-- Grounding: CLAUDE.md (Role management, spec 21, all slices complete;
-     /admin roles setup — comprehensive read-only preflight); spec
+     /admin roles_setup — comprehensive read-only preflight); spec
      21-role-management.md. -->
 
 Ball Boy can manage three kinds of Discord role for a league: a **team role** per
 claimed team, a **conference role** per conference with at least one claim, and a
-small set of fixed **league roles** (admin, commissioner, lurker, announce,
-stream). Team and conference roles are created and assigned automatically as
-ownership changes; league roles are configured once.
+small set of fixed **league roles** (admin, commissioner, lurker, user-games-only
+notify, announce, stream). Team and conference roles are created and assigned
+automatically as ownership changes; league roles are configured once.
 
 ## What it is
 
@@ -37,8 +37,8 @@ without a commissioner hand-managing role assignments.
 - **Ball Boy's own role must sit above every role it manages.** Discord only lets a
   bot assign or reorder roles below its own highest role. If a team or conference
   role Ball Boy manages ends up above Ball Boy's role (for example, after a manual
-  server reorg), bulk sync refuses to run rather than silently failing partway
-  through.
+  server reorg), bulk sync leaves that one role where it is and lists it by name in
+  the reply — it doesn't abort or skip the rest of the sync.
 
 ## How it behaves
 
@@ -51,8 +51,8 @@ first `/admin roles_sync_all`.
 ## Related commands
 
 - {{< relref "/docs/commands/admin" >}} — `/admin roles` (the fixed
-  admin/commissioner/lurker/announce/stream roles), `/admin roles_sync_all` (bulk
-  provisioning), `/admin roles_setup` (the preflight).
+  admin/commissioner/lurker/user-games/announce/stream roles), `/admin
+  roles_sync_all` (bulk provisioning), `/admin roles_setup` (the preflight).
 - See {{< relref "/docs/concepts/team-ownership" >}} for the ownership changes that
   drive role assignment.
 - See {{< relref "/docs/getting-started/permissions-setup" >}} for the initial
