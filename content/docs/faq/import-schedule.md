@@ -8,3 +8,8 @@ weight: 40
 which of four supported formats you're using from its header shape. See
 {{< relref "/docs/concepts/schedule-csv-formats" >}} for the exact column
 layouts.
+
+Prefer not to format a CSV at all? The **Manage Schedule** tile in Ball Boy's
+Activity (commissioners only) builds the regular season, conference
+championships, and bowls/CFP interactively instead — see
+{{< relref "/docs/faq/manage-schedule-activity" >}}.
