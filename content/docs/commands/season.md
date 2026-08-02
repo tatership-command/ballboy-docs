@@ -142,6 +142,20 @@ Administrator who is not also the league's Commissioner is still denied).
 season — the only ways out of a completed season are advancing (which triggers
 rollover into a new season) or deleting it.
 
+**Notes:** Rolling back does **not** discard the leaving week's game results or
+team records — they're deliberately preserved. If a score was wrong, correct it
+directly with `/season result` on the affected game rather than rolling back to
+redo it.
+
+**Correcting a CFP playoff score doesn't rebuild the bracket.** Ball Boy builds
+each Quarterfinal, Semifinal, and Championship matchup from the previous round's
+results the moment it advances into that round, and never rebuilds a round that's
+already built. If you correct a First Round, Quarterfinal, or Semifinal score
+after that round has already been used to build the next one, the matchups it
+produced won't update — and this isn't specific to rolling back; the same thing
+happens on any advance after a correction, with or without a rollback in between.
+No error is shown. Correct the affected games directly with `/season result`.
+
 ## `/season sync_teams`
 
 **Syntax:** `/season sync_teams <league> [season]`
