@@ -138,22 +138,24 @@ underlying advance logic this triggers.
 
 **Who can run it:** Server admin.
 
-**What it does:** Configures Ball Boy's Twitch stream auto-detection matching
-criteria — Ball Boy watches for the streamer going live on Twitch and posts a
-"going live" announcement once every **enabled** signal matches (AND, not OR),
-so streaming something else — a different league, a different week — never trips
-a false alert. Requires a `streams` channel or a game thread to post the
+**What it does:** Configures Ball Boy's stream auto-detection matching
+criteria — Ball Boy watches for the streamer going live on Twitch or YouTube and
+posts a "going live" announcement once every **enabled** signal matches (AND, not
+OR), so streaming something else — a different league, a different week — never
+trips a false alert. Requires a `streams` channel or a game thread to post the
 announcement to; set the streams channel with {{< relref "/docs/commands/admin"
 >}} `/admin channels`, not here.
 
 **Notes:** The poise function backing this subcommand is internally named
 `admin_stream_detect`, but the **user-facing command name is `/admin stream`**
-(`rename = "stream"`). `keywords`/`category` also drive a legacy Discord-presence
-fallback path (requires the Presence privileged Discord gateway intent to be
-enabled for the bot); the primary detection path is the Twitch EventSub webhook
-receiver, which all five signals feed. Auto-detection is a separate feature from
-the manual {{< relref "/docs/commands/stream" >}} `/stream` command and the
-game-thread Go Live button.
+(`rename = "stream"`). All five signals feed the Twitch EventSub and YouTube
+WebSub webhook receivers, which are how detection works; the older
+Discord-presence path has been removed, so no privileged gateway intent is
+involved. These settings do **not** apply to in-Discord voice screen-share
+detection — a screen share has no title to match against, so it only needs a
+`streams` channel. Auto-detection is a separate feature from the manual
+{{< relref "/docs/commands/stream" >}} `/stream` command and the game-thread Go
+Live button.
 
 ## `/admin welcome`
 
