@@ -74,9 +74,10 @@ game nights. Ball Boy takes that work off your plate:
   commissioner, lurker, announce, stream) are created, colored, and kept in
   sync with ownership — no manual role management. See
   {{< relref "/docs/concepts/roles-and-conferences" >}}.
-- **Streaming & Go Live** — announce a stream automatically via Discord
-  presence detection, with a one-click Go Live button in the game thread, or
-  manually with `/stream`. See {{< relref "/docs/flows/streaming" >}}.
+- **Streaming & Go Live** — announce a stream automatically when you go live on
+  Twitch or YouTube or start a screen share in voice, with a one-click Go Live
+  button in the game thread, or manually with `/stream`. See
+  {{< relref "/docs/flows/streaming" >}}.
 - **New-member welcome** — greet new members automatically with claim
   instructions the moment they join, gain a role, or gain channel access. See
   {{< relref "/docs/flows/welcome-flow" >}}.
