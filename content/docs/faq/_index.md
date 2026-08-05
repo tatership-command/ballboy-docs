@@ -32,6 +32,7 @@ it from the sidebar, or copy a question's link to share the exact answer.
 ## For commissioners
 
 - [How does the season advance from week to week?]({{< relref "/docs/faq/season-advance" >}})
+- [What happens when I roll back a week?]({{< relref "/docs/faq/season-rollback" >}})
 - [How do I make someone a commissioner or admin?]({{< relref "/docs/faq/admin-access" >}})
 - [How do I set up roles, and why can't Ball Boy create team/conference roles?]({{< relref "/docs/faq/roles-setup" >}})
 - [Can I build my schedule without uploading a CSV?]({{< relref "/docs/faq/manage-schedule-activity" >}})
@@ -44,6 +45,7 @@ it from the sidebar, or copy a question's link to share the exact answer.
 ## Troubleshooting
 
 - [Why is my command denied?]({{< relref "/docs/faq/command-denied" >}})
+- [Why was my advance blocked with a permissions message?]({{< relref "/docs/faq/advance-blocked-permissions" >}})
 - [How do I get Ball Boy working in a new server?]({{< relref "/docs/faq/new-server-setup" >}})
 
 ---
