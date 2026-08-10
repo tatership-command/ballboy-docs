@@ -2,6 +2,7 @@ admin access
 admin auto_advance
 admin board_color
 admin board_image
+admin ccg_preview
 admin cfp_preview
 admin channels
 admin launch_cards
