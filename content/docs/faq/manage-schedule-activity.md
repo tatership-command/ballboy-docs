@@ -13,7 +13,11 @@ modes:
   each week's opponent and home/away.
 - **Conference Championships** — one title-game row per eligible conference.
 - **Bowl Weeks & CFP** — the non-playoff bowl slate plus the 12-team playoff
-  bracket, seeded from your First Round pairings.
+  bracket, seeded from your First Round pairings. Each bowl you add has its own
+  **Bowl Week 1 / Bowl Week 2** picker, so you can split the slate across both
+  weeks. Weeks 3 and 4 aren't offered — they belong to the semifinals and the
+  championship, which Ball Boy builds for you. Quarterfinal host bowls are
+  always Bowl Week 2 and aren't yours to move.
 
 Each mode has its own Apply step that writes straight to the season — no CSV
 needed. You can still use `/season schedule` to upload a CSV for a bulk
