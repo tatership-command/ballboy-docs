@@ -64,6 +64,7 @@ team leave
 team release
 team switch
 teams
+timezone
 waitlist add
 waitlist list
 waitlist promote
