@@ -4,8 +4,13 @@ summary: "Ball Boy checks it can post before it starts, so a missing permission 
 weight: 155
 ---
 <!-- Grounding: CLAUDE.md (Advance/prepare permission preflight — spec 39 A5,
-     Seam I: required_channel_permissions, advance_preflight_blocked_message);
-     .docs/releases/v1.0.49.md. -->
+     Seam I: required_channel_permissions, advance_preflight_blocked_message;
+     Advance-surface channel fallback slice); .docs/releases/v1.0.49.md;
+     verified against ballboy-prod @ v1.0.64: src/discord/handler.rs
+     exec_season_advance_for_handoff / deferred_provision_preflight both
+     resolve resolve_channel_with_system_fallback before building checks;
+     src/discord/gateway.rs admin_roles_setup is registered with
+     rename = "roles_setup". -->
 
 Before `/season advance` or `/season prepare_week` does anything, Ball Boy checks
 that it can actually post in the channels it's about to need: your announcements
@@ -23,9 +28,11 @@ server-wide role. That matters, because the usual cause is a channel-specific
 override denying something the bot's role otherwise grants.
 
 Fix it under Server Settings, then Integrations, then Ball Boy, or by editing
-that channel's permission overwrites, then run the command again. A channel you
-haven't configured at all is simply skipped, not treated as an error. For a full
-checkup, `/admin roles setup` reports everything that's missing.
+that channel's permission overwrites, then run the command again. If you
+haven't configured an announcements or game-thread channel at all, Ball Boy
+falls back to your server's system channel and checks that instead — it's
+only skipped outright when there's no system channel either. For a full
+checkup, `/admin roles_setup` reports everything that's missing.
 
 Related: {{< relref "/docs/faq/roles-setup" >}},
 {{< relref "/docs/commands/season" >}} `/season advance`.
