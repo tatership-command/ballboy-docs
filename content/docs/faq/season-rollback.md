@@ -4,9 +4,13 @@ summary: "It restores the season's position, but deliberately keeps the results 
 weight: 111
 ---
 <!-- Grounding: CLAUDE.md (Rollback reversal contract — ADR 0021 / spec 38,
-     Seams A/C/D; CFP bracket-correction warning, W1); .docs/ADR/
-     0021-season-rollback-reversal-contract.md; .docs/spec/
-     38-season-rollback-reversal.md. -->
+     Seams A/C/D); .docs/ADR/0021-season-rollback-reversal-contract.md;
+     .docs/spec/38-season-rollback-reversal.md; src/data/services.rs
+     handle_cfp_advancement (verified against ballboy-prod @ v1.0.64: all
+     three transitions recompute from current results on every
+     /season advance; cfp_downstream_conflict_message refuses when a
+     downstream game is already played; unassignable rows are skipped with
+     only a server-side tracing::warn!). -->
 
 `/season rollback` moves the season back one week or phase and **restores its
 position**. It deletes the game threads and the weekly announcement for the week
@@ -24,11 +28,22 @@ isn't a commissioner is still denied. It's also blocked on a completed season;
 from there your only options are advancing (which rolls over into a new season)
 or deleting it.
 
-One caveat worth knowing: CFP bracket rounds don't re-derive. If you fix a First
-Round, Quarterfinal, or Semifinal score after Ball Boy already built the next
-round from it, that round won't update, even after a rollback and re-advance.
-Ball Boy warns you when you roll back out of a CFP bowl week so you know to
-check it rather than assuming it sorted itself out.
+One thing worth knowing: CFP bracket rounds *do* re-derive. On every
+`/season advance` that crosses into the next round, Ball Boy rebuilds the
+Quarterfinals from First Round results, the Semifinals from Quarterfinal
+results, and the Championship from Semifinal results. Catch a wrong score
+before you advance past that round and the next advance builds it correctly
+on its own. If you've already moved on, roll back to the round in question
+and advance again to rebuild what follows it from the corrected score.
+
+The one thing Ball Boy won't do is overwrite a game that's already been
+played. There's no command to un-play a game, so if a correction would
+change who's playing in an already-completed downstream game, `/season
+advance` refuses outright and names the game(s) you need to fix by hand
+first. There's also a rarer, silent case: a hand-imported bracket row with a
+blank seed cell that Ball Boy can't match to a bracket slot gets skipped
+with no message you'll see — it's only logged server-side, so a bracket
+round that looks incomplete is worth double-checking your import for.
 
 Related: {{< relref "/docs/commands/season" >}} `/season rollback`,
 `/season result`.

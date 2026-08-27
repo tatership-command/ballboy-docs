@@ -7,8 +7,9 @@ weight: 20
 Yes. A Discord server is just a container — it can hold any number of
 independent Ball Boy leagues. Most league-scoped commands take a `league`
 option so there's no ambiguity about which one you mean. A few commands —
-`/stream`, `/admin access`, and `/conference manage` — let you leave `league`
-out and resolve it automatically when the server has exactly one league (they
-ask you to pick one if there's more than one). `/team claim` needs no `league`
-option at all; you choose your league inside the claim wizard. See
+`/stream` and `/admin access` — let you leave `league` out and resolve it
+automatically when the server has exactly one league (they ask you to pick one
+if there's more than one). `/team claim` and `/conference manage` need no
+`league` option at all; both open an Activity where you choose the league
+inside it. See
 {{< relref "/docs/concepts/multiple-leagues" >}}.

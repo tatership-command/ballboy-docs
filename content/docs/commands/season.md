@@ -4,6 +4,20 @@ summary: "Create, advance, import, inspect, and delete seasons."
 weight: 20
 ---
 
+<!-- Grounding: verified against production commit 5ed70abd (v1.0.64,
+     ballboy-00195-t6j). CFP bracket rebuild-on-advance and downstream-conflict
+     refusal: src/data/services.rs (handle_cfp_advancement,
+     cfp_downstream_conflict_message, CfpDownstreamConflict, qf_bye_on_home —
+     the blank/missing home_seed/away_seed metadata skip logs a
+     tracing::warn only, no Ok(Some(message)) is returned). The old
+     rollback-time CFP warning (CFP_BRACKET_ROLLBACK_WARNING,
+     is_cfp_bowl_week) no longer exists anywhere in src/ as of this commit.
+     `/season status` (src/discord/commands.rs, fn season_status): the
+     **Phase** line renders a friendly label (phase_label, e.g.
+     "Preseason"), but the **Current week** line always renders
+     `season.current_week_key` verbatim with no label translation, so it
+     shows the raw `week_pre` key during preseason. -->
+
 `/season` is a subcommand group (`/season <sub>`). It covers the lifecycle of a
 season within a league: creation, weekly advancement, schedule import, results,
 status, rollback, roster reconciliation, and deletion. Every season-scoped
@@ -147,14 +161,25 @@ team records — they're deliberately preserved. If a score was wrong, correct i
 directly with `/season result` on the affected game rather than rolling back to
 redo it.
 
-**Correcting a CFP playoff score doesn't rebuild the bracket.** Ball Boy builds
-each Quarterfinal, Semifinal, and Championship matchup from the previous round's
-results the moment it advances into that round, and never rebuilds a round that's
-already built. If you correct a First Round, Quarterfinal, or Semifinal score
-after that round has already been used to build the next one, the matchups it
-produced won't update — and this isn't specific to rolling back; the same thing
-happens on any advance after a correction, with or without a rollback in between.
-No error is shown. Correct the affected games directly with `/season result`.
+**Correcting a CFP playoff score does rebuild the bracket — up to the point
+where a downstream game has already been played.** Every `/season advance`
+through a bowl-week transition (First Round → Quarterfinal, Quarterfinal →
+Semifinal, Semifinal → Championship) recomputes that round's matchups from
+the *current* results of the round before it, not just the results at the
+time it was first built. So correcting a First Round, Quarterfinal, or
+Semifinal score with `/season result` and then advancing (with or without a
+rollback in between) does update the downstream matchup it feeds, as long as
+that downstream game hasn't been played yet.
+
+If the downstream game **has already been played**, Ball Boy refuses to
+advance rather than overwrite a played game's participants: it shows an error
+naming the specific game(s) in conflict (bowl name, matchup, and final
+score), and there's no override — the only recourse is to correct the
+affected game(s) by hand. There's also a rarer, silent case: a hand-imported
+bracket row with a blank seed number can't be matched to a bracket slot, so
+that quarterfinal is skipped with no error shown to you (only an internal log
+entry) — double-check your bowl/CFP schedule CSV includes a seed for every
+row if a quarterfinal doesn't fill in as expected.
 
 ## `/season sync_teams`
 
