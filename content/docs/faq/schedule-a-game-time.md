@@ -16,3 +16,7 @@ The scheduled kickoff then shows in each person's own local timezone
 automatically (Discord's dynamic timestamps), and a public note is posted in the
 game thread so everyone sees the time — not just whoever scheduled it. You can't
 schedule a game in the past. See {{< relref "/docs/commands/game" >}}.
+
+That's the path for when you already know the time. If you're still trying to
+find one that works for both of you, use the **Add Availability** button instead
+— see {{< relref "/docs/faq/availability-and-timezones" >}}.
