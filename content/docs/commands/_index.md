@@ -7,7 +7,7 @@ bookCollapseSection: true
 
 # Command Reference
 
-Ball Boy registers thirteen top-level slash commands. Each has its own reference
+Ball Boy registers fourteen top-level slash commands. Each has its own reference
 page covering its subcommands, options, permission gate, and effect:
 
 - `/league` — create, configure, inspect, and delete a league; connect it to the EA
@@ -19,6 +19,8 @@ page covering its subcommands, options, permission gate, and effect:
 - `/standings` — show current standings in Discord.
 - `/schedule` — show the game schedule in Discord.
 - `/game` — manage an individual game thread: scheduling and thread deletion.
+- `/timezone` — set the time zone Ball Boy uses for you, in every league and
+  server.
 - `/admin` — server-owner configuration: channels, roles, auto-advance, welcome,
   board appearance, and permission preflight.
 - `/waitlist` — manage the team-claim waitlist.
