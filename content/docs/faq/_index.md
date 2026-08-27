@@ -28,6 +28,7 @@ it from the sidebar, or copy a question's link to share the exact answer.
 - [Does Ball Boy announce automatically when I go live on Twitch?]({{< relref "/docs/faq/stream-auto-detect" >}})
 - [How do I get notified when it's time to play my games?]({{< relref "/docs/faq/game-notifications" >}})
 - [How do I schedule a game time?]({{< relref "/docs/faq/schedule-a-game-time" >}})
+- [How do we find a time to play when we're in different timezones?]({{< relref "/docs/faq/availability-and-timezones" >}})
 
 ## For commissioners
 
