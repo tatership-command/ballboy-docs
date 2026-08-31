@@ -10,7 +10,9 @@ build the schedule interactively instead of formatting a CSV. It has three
 modes:
 
 - **Regular Season** — auto-populates a card per owned team so you can pick
-  each week's opponent and home/away.
+  each week's opponent and home/away. Each card also shows that team's running
+  home/away split (🏠 6 · ✈️ 6) beside its games count, updating as you edit, so
+  you can even the split out before you apply. Byes count toward neither side.
 - **Conference Championships** — one title-game row per eligible conference.
 - **Bowl Weeks & CFP** — the non-playoff bowl slate plus the 12-team playoff
   bracket, seeded from your First Round pairings. Each bowl you add has its own
